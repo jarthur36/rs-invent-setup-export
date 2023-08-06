@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON to Table</title>
+    <!-- Include Bootstrap CSS from a CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Input JSON</h4>
+            <textarea id="jsonInput" class="form-control" rows="8" placeholder='{"equipment": [{"name": "item1"}, {"name": "item2"}...]}'></textarea>
+            <button class="btn btn-primary mt-3" onclick="processJSON()">Process</button>
+        </div>
+        <div class="col-md-6">
+            <h4>Equipment Names</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Equipment</th>
+                    </tr>
+                </thead>
+                <tbody id="equipmentTableBody">
+                    <!-- Rows will be added here dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- JS to handle the processing and table population -->
+<script>
+    function processJSON() {
+        let input = document.getElementById('jsonInput').value;
+        let equipmentList;
+
+        try {
+            let parsedData = JSON.parse(input);
+            equipmentList = parsedData.equipment;
+        } catch (error) {
+            alert("Invalid JSON input!");
+            return;
+        }
+
+        if (!equipmentList || equipmentList.length !== 14) {
+            alert("Expected 14 equipment entries!");
+            return;
+        }
+
+        populateTable(equipmentList);
+    }
+
+    function populateTable(equipmentList) {
+        const tableBody = document.getElementById('equipmentTableBody');
+        tableBody.innerHTML = '';  // Clear any existing rows
+
+        for (let equipment of equipmentList) {
+            let row = tableBody.insertRow();
+            let cell = row.insertCell(0);
+            cell.textContent = equipment.name;
+        }
+    }
+</script>
+
+<!-- Include Bootstrap JS and Popper.js from a CDN -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
